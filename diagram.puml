@@ -1,0 +1,35 @@
+@startuml
+
+class ControlTower {
+    - aircrafts: List<Aircraft>
+    + register(aircraft: Aircraft): void
+    + processNext(): void
+    + broadcast(msg: String, sender: Aircraft): void
+}
+
+class Aircraft {
+    - id: String
+    - emergency: boolean
+    - tower: ControlTower
+    + send(msg: String): void
+    + receive(msg: String): void
+}
+
+class PassengerPlane {
+    + receive(msg: String): void
+}
+
+class CargoPlane {
+    + receive(msg: String): void
+}
+
+class Helicopter {
+    + receive(msg: String): void
+}
+
+ControlTower "1" *-- "*" Aircraft : registers
+Aircraft <|-- PassengerPlane
+Aircraft <|-- CargoPlane
+Aircraft <|-- Helicopter
+
+@enduml
