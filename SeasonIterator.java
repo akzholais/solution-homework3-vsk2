@@ -1,24 +1,21 @@
 package src;
 
-import java.util.Iterator;
-import java.util.List;
+public class SeasonIterator implements EpisodeIterator {
+    private Season season;
+    private int index = 0;
 
-class SeasonIterator implements Iterator<Episode> {
-    private List<Episode> episodes;
-    private int currentIndex;
-
-    public SeasonIterator(List<Episode> episodes) {
-        this.episodes = episodes;
-        this.currentIndex = 0;
+    public SeasonIterator(Season season) {
+        this.season = season;
     }
 
     @Override
     public boolean hasNext() {
-        return currentIndex < episodes.size();
+        return index < season.getEpisodes().size();
     }
 
     @Override
     public Episode next() {
-        return episodes.get(currentIndex++);
+        if (!hasNext()) throw new IllegalStateException("No more episodes");
+        return season.getEpisodes().get(index++);
     }
 }

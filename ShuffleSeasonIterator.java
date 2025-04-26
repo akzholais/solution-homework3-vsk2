@@ -1,26 +1,27 @@
 package src;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
-class ShuffleSeasonIterator implements Iterator<Episode> {
-    private List<Episode> episodes;
+public class ShuffleSeasonIterator implements EpisodeIterator {
     private List<Episode> shuffledEpisodes;
-    private int currentIndex;
+    private int index = 0;
 
-    public ShuffleSeasonIterator(List<Episode> episodes, long seed) {
-        this.episodes = new ArrayList<>(episodes);
-        this.shuffledEpisodes = new ArrayList<>(episodes);
-        Collections.shuffle(this.shuffledEpisodes, new Random(seed));  // Перемешиваем с фиксированным seed
-        this.currentIndex = 0;
+    public ShuffleSeasonIterator(Season season, long seed) {
+        this.shuffledEpisodes = new ArrayList<>(season.getEpisodes());
+        Collections.shuffle(shuffledEpisodes, new Random(seed));
     }
 
     @Override
     public boolean hasNext() {
-        return currentIndex < shuffledEpisodes.size();
+        return index < shuffledEpisodes.size();
     }
 
     @Override
     public Episode next() {
-        return shuffledEpisodes.get(currentIndex++);
+        if (!hasNext()) throw new IllegalStateException("No more episodes");
+        return shuffledEpisodes.get(index++);
     }
 }

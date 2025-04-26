@@ -1,24 +1,25 @@
 package src;
 
-import java.util.Iterator;
-import java.util.List;
 
-class ReverseSeasonIterator implements Iterator<Episode> {
-    private List<Episode> episodes;
-    private int currentIndex;
+import java.util.Collections;
 
-    public ReverseSeasonIterator(List<Episode> episodes) {
-        this.episodes = episodes;
-        this.currentIndex = episodes.size() - 1;  // Начинаем с последнего эпизода
+public class ReverseSeasonIterator implements EpisodeIterator {
+    private Season season;
+    private int index;
+
+    public ReverseSeasonIterator(Season season) {
+        this.season = season;
+        this.index = season.getEpisodes().size() - 1;
     }
 
     @Override
     public boolean hasNext() {
-        return currentIndex >= 0;
+        return index >= 0;
     }
 
     @Override
     public Episode next() {
-        return episodes.get(currentIndex--);
+        if (!hasNext()) throw new IllegalStateException("No more episodes");
+        return season.getEpisodes().get(index--);
     }
 }

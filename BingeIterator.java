@@ -1,31 +1,36 @@
 package src;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-class BingeIterator implements Iterator<Episode> {
-    private List<Season> seasons;
+public class BingeIterator implements EpisodeIterator {
+    private List<Iterator<Episode>> seasonIterators;
     private Iterator<Episode> currentIterator;
 
     public BingeIterator(List<Season> seasons) {
-        this.seasons = seasons;
-        this.currentIterator = seasons.get(0).iterator();  // Начинаем с первого сезона
+        seasonIterators = new ArrayList<>();
+        for (Season season : seasons) {
+            seasonIterators.add(season.iterator());  // Добавляем итератор для каждого сезона
+        }
+        this.currentIterator = seasonIterators.isEmpty() ? null : seasonIterators.get(0);
     }
 
     @Override
     public boolean hasNext() {
-        // Пока в текущем сезоне есть эпизоды, продолжаем обход
-        while (!currentIterator.hasNext() && !seasons.isEmpty()) {
-            seasons.remove(0);  // Убираем первый сезон
-            if (!seasons.isEmpty()) {
-                currentIterator = seasons.get(0).iterator();  // Переходим к следующему сезону
-            }
+        // Перебор всех сезонов
+        while (currentIterator != null && !currentIterator.hasNext()) {
+            seasonIterators.remove(0);  // Убираем пустой итератор
+            currentIterator = seasonIterators.isEmpty() ? null : seasonIterators.get(0);  // Переходим к следующему сезону
         }
-        return currentIterator.hasNext();
+        return currentIterator != null && currentIterator.hasNext();  // Проверка наличия следующего эпизода
     }
 
     @Override
     public Episode next() {
+        if (!hasNext()) {
+            throw new IllegalStateException("No more episodes");
+        }
         return currentIterator.next();  // Возвращаем следующий эпизод
     }
 }

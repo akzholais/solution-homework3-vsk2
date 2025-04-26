@@ -1,12 +1,13 @@
 package src;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-class Season implements Iterable<Episode> {
-    private List<Episode> episodes;
+public class Season implements Iterable<Episode> {
+    private final List<Episode> episodes;
 
     public Season() {
-        this.episodes = new ArrayList<>();
+        episodes = new ArrayList<>();
     }
 
     public void addEpisode(Episode e) {
@@ -14,17 +15,8 @@ class Season implements Iterable<Episode> {
     }
 
     @Override
-    public Iterator<Episode> iterator() {
-        return new SeasonIterator(episodes);  // Возвращаем обычный итератор
-    }
-
-    // Методы для получения итераторов по обратному порядку и случайному порядку
-    public Iterator<Episode> reverseIterator() {
-        return new ReverseSeasonIterator(episodes);
-    }
-
-    public Iterator<Episode> shuffleIterator(long seed) {
-        return new ShuffleSeasonIterator(episodes, seed);
+    public EpisodeIterator iterator() {
+        return new SeasonIterator(this);  // Возвращаем SeasonIterator, который реализует EpisodeIterator
     }
 
     public List<Episode> getEpisodes() {

@@ -1,12 +1,11 @@
 package src;
 
-import java.util.Iterator;
 
-class SkipIntroIterator implements Iterator<EpisodeView> {
-    private Iterator<Episode> iterator;
+public class SkipIntroIterator implements EpisodeIterator {
+    private EpisodeIterator iterator;
     private int skipSeconds;
 
-    public SkipIntroIterator(Iterator<Episode> iterator, int skipSeconds) {
+    public SkipIntroIterator(EpisodeIterator iterator, int skipSeconds) {
         this.iterator = iterator;
         this.skipSeconds = skipSeconds;
     }
@@ -17,8 +16,9 @@ class SkipIntroIterator implements Iterator<EpisodeView> {
     }
 
     @Override
-    public EpisodeView next() {
+    public Episode next() {
         Episode episode = iterator.next();
-        return new EpisodeView(episode, skipSeconds);
+        System.out.println("Skipping intro, starting at " + skipSeconds + " seconds in: " + episode.getTitle());
+        return episode; // You can enhance this to wrap the episode in a custom view object
     }
 }

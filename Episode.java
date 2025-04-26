@@ -1,8 +1,9 @@
 package src;
 
-class Episode {
-    String title;
-    int runtimeSec;
+
+public class Episode {
+    private String title;
+    private int runtimeSec;
 
     public Episode(String title, int runtimeSec) {
         this.title = title;
@@ -15,13 +16,5 @@ class Episode {
 
     public int getRuntimeSec() {
         return runtimeSec;
-    }
-
-    @Override
-    public String toString() {
-        return "src.Episode{" +
-                "title='" + title + '\'' +
-                ", runtimeSec=" + runtimeSec +
-                '}';
     }
 }
